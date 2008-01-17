@@ -1,0 +1,15 @@
+Source: cdbs-slind
+Section: host-tools
+Priority: extra
+Maintainer: Sergey Lapin <slapin@slind.org>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: cdbs-slind
+Architecture: any
+Depends: cdbs
+Section: host-tools
+Description: Small script for cdbs to be Slind-aware.
+ A small script for cdbs to be Slind-aware.
+ Instead of using debhelper.mk, use debhelper-slind.mk
+ and build-depend on cdbs-slind
