@@ -11,5 +11,4 @@ Depends: cdbs
 Section: host-tools
 Description: Small script for cdbs to be Slind-aware.
  A small script for cdbs to be Slind-aware.
- Instead of using debhelper.mk, use debhelper-slind.mk
- and build-depend on cdbs-slind
+ Some original CDBS makefiles are diverted giving a way to Slind tools.

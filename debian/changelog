@@ -1,4 +1,12 @@
-cdbs-slind (0.0) unstable; urgency=low
+cdbs-slind (0.2) unstable; urgency=low
+
+  * made a diversion of CDBS debhelper.mk and autotools.mk
+  * debhelper-slind.mk moved back to debhelper.mk
+  * added an autotools.mk
+
+ -- Vladimir Zapolskiy <vladimir.zapolskiy@siemens.com>  Thu, 04 Dec 2008 16:29:03 +0300
+
+cdbs-slind (0.1) unstable; urgency=low
 
   * Initial Release.
 

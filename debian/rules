@@ -10,8 +10,6 @@
 #export DH_VERBOSE=1
 
 
-
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -37,7 +35,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	$(MAKE) clean
+	$(MAKE) DESTDIR=$(CURDIR)/debian/cdbs-slind clean
 
 	dh_clean 
 
