@@ -1,3 +1,9 @@
+cdbs-embedded (0.2.oi3) asimov; urgency=low
+
+  * autotools-vars.mk was installed in wrong directory. Oops.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 14 Mar 2009 17:17:27 +0600
+
 cdbs-embedded (0.2.oi2) asimov; urgency=low
 
   * Added diversion for autotools-vars.mk: cdbs sets CC=gcc, CXX=g++
