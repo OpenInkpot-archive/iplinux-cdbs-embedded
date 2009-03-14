@@ -1,14 +1,16 @@
-Source: cdbs-slind
-Section: host-tools
-Priority: extra
-Maintainer: Sergey Lapin <slapin@slind.org>
-Build-Depends: debhelper (>= 5)
-Standards-Version: 3.7.2
+Source: cdbs-embedded
+Section: host/tools
+Priority: optional
+Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.0
 
-Package: cdbs-slind
-Architecture: any
+Package: cdbs-embedded
+Architecture: all
 Depends: cdbs
-Section: host-tools
-Description: Small script for cdbs to be Slind-aware.
- A small script for cdbs to be Slind-aware.
- Some original CDBS makefiles are diverted giving a way to Slind tools.
+Provides: cdbs-slind
+Description: Generation of stripped-down packages with cdbs
+ cdbs includes lots of stuff to the packages: changelogs, documentation, etc.
+ .
+ cdbs-embedded diverts the existing cdbs makefiles to get rid of stuff useless
+ on the target devices.

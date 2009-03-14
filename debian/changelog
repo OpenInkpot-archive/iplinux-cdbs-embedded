@@ -1,3 +1,11 @@
+cdbs-embedded (0.2.oi1) asimov; urgency=low
+
+  * Build for IPlinux.
+  * Renamed to be distro-neutral.
+  * Refreshed debhelper.mk for CDBS from Lenny.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 14 Mar 2009 13:22:37 +0600
+
 cdbs-slind (0.2) unstable; urgency=low
 
   * made a diversion of CDBS debhelper.mk and autotools.mk

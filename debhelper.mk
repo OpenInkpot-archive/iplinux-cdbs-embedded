@@ -54,6 +54,12 @@
 ####
 # Special variables used by this rule file:
 #
+# DEB_DH_GENCONTROL_ARGS_ALL
+#   Arguments passed directly to dh_gencontrol, for all packages
+# DEB_DH_GENCONTROL_ARGS_<package>
+#   Arguments passed directly to dh_gencontrol, for a particular package <package>
+# DEB_DH_GENCONTROL_ARGS
+#   Completely override argument passing to dh_gencontrol.
 # DEB_DH_MAKESHLIBS_ARGS_ALL
 #   Arguments passed directly to dh_makeshlibs, for all packages
 # DEB_DH_MAKESHLIBS_ARGS_<package>
@@ -86,8 +92,12 @@ endif
 
 ifeq ($(DH_COMPAT),4)
 CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), debhelper (>= 4.2.0)
-else
+endif
+ifeq ($(DH_COMPAT),5)
 CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), debhelper (>= 5)
+endif
+ifeq ($(DH_COMPAT),6)
+CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), debhelper (>= 5.0.44)
 endif
 
 ifeq ($(DEB_VERBOSE_ALL), yes)
@@ -104,6 +114,7 @@ cdbs_add_dashx = $(foreach i,$(1),$(patsubst %,-X %,$(i)))
 cdbs_strip_quotes = $(subst ',,$(subst ",,$(1)))
 # hello emacs '
 
+DEB_DH_GENCONTROL_ARGS = $(DEB_DH_GENCONTROL_ARGS_ALL) $(DEB_DH_GENCONTROL_ARGS_$(cdbs_curpkg))
 DEB_DH_MAKESHLIBS_ARGS = $(DEB_DH_MAKESHLIBS_ARGS_ALL) $(DEB_DH_MAKESHLIBS_ARGS_$(cdbs_curpkg))
 DEB_DH_SHLIBDEPS_ARGS = $(if $(DEB_SHLIBDEPS_LIBRARY_$(cdbs_curpkg)),-L $(DEB_SHLIBDEPS_LIBRARY_$(cdbs_curpkg))) $(if $(DEB_SHLIBDEPS_INCLUDE_$(cdbs_curpkg))$(DEB_SHLIBDEPS_INCLUDE),-l $(shell echo $(DEB_SHLIBDEPS_INCLUDE_$(cdbs_curpkg)):$(DEB_SHLIBDEPS_INCLUDE) | perl -pe 's/ /:/g;')) $(DEB_DH_SHLIBDEPS_ARGS_ALL) $(DEB_DH_SHLIBDEPS_ARGS_$(cdbs_curpkg))
 
@@ -122,7 +133,7 @@ $(foreach x,$(DEB_DBG_PACKAGES),$(eval $(call cdbs_deb_dbg_package_assign,$(valu
 endif
 endif
 cdbs_dbg_package = $(if $(DEB_DBG_PACKAGE_$(cdbs_curpkg)),$(DEB_DBG_PACKAGE_$(cdbs_curpkg)),$(DEB_DBG_PACKAGE_ALL))
-cdbs_dbg_package_option = $(if $(cdbs_dbg_package),$(shell if [ "$(DH_COMPAT)" -eq 5 ]; then echo "--dbg-package=$(strip $(cdbs_dbg_package))"; fi))
+cdbs_dbg_package_option = $(if $(cdbs_dbg_package),$(shell if [ "$(DH_COMPAT)" -ge 5 ]; then echo "--dbg-package=$(strip $(cdbs_dbg_package))"; fi))
 DEB_DH_STRIP_ARGS = $(cdbs_dbg_package_option)
 endif
 
@@ -154,7 +165,7 @@ $(patsubst %,binary/%,$(DEB_ALL_PACKAGES)) :: binary/% : binary-makedeb/%
 # dh_install to split the source from debian/tmp, as well as installing
 # ChangeLogs and the like.
 $(patsubst %,binary-install/%,$(DEB_ALL_PACKAGES)) :: binary-install/%:
-ifneq (,$(findstring docs,$(SLIND_BUILD_OPTIONS)))
+ifneq (,$(findstring docs,$(DEB_BUILD_OPTIONS)))
 	dh_installdocs -p$(cdbs_curpkg) $(DEB_INSTALL_DOCS_ALL) $(DEB_INSTALL_DOCS_$(cdbs_curpkg)) 
 	dh_installexamples -p$(cdbs_curpkg) $(DEB_INSTALL_EXAMPLES_$(cdbs_curpkg))
 	dh_installman -p$(cdbs_curpkg) $(DEB_INSTALL_MANPAGES_$(cdbs_curpkg)) 
@@ -169,13 +180,14 @@ endif
 	dh_installpam -p$(cdbs_curpkg) $(DEB_DH_INSTALLPAM_ARGS)
 	dh_installlogrotate -p$(cdbs_curpkg) $(DEB_DH_INSTALLLOGROTATE_ARGS)
 	dh_installlogcheck -p$(cdbs_curpkg) $(DEB_DH_INSTALLLOGCHECK_ARGS)
-	dh_installmime -p$(cdbs_curpkg) $(DEB_DH_INSTALLMIME_ARGS)
-ifneq (,$(findstring docs,$(SLIND_BUILD_OPTIONS)))
+ifneq (,$(findstring docs,$(DEB_BUILD_OPTIONS)))
 	dh_installchangelogs -p$(cdbs_curpkg) $(DEB_DH_INSTALLCHANGELOGS_ARGS) $(DEB_INSTALL_CHANGELOGS_ALL) $(DEB_INSTALL_CHANGELOGS_$(cdbs_curpkg))
 endif
 	$(if $(wildcard /usr/bin/dh_installudev),dh_installudev -p$(cdbs_curpkg) $(DEB_DH_INSTALLUDEV_ARGS))
+	$(if $(wildcard /usr/bin/dh_lintian),dh_lintian -p$(cdbs_curpkg) $(DEB_DH_LINTIAN_ARGS))
 	dh_install -p$(cdbs_curpkg) $(if $(DEB_DH_INSTALL_SOURCEDIR),--sourcedir=$(DEB_DH_INSTALL_SOURCEDIR)) $(DEB_DH_INSTALL_ARGS)
 	dh_link -p$(cdbs_curpkg) $(DEB_DH_LINK_ARGS) $(DEB_DH_LINK_$(cdbs_curpkg))
+	dh_installmime -p$(cdbs_curpkg) $(DEB_DH_INSTALLMIME_ARGS)
 
 # This rule is called after all packages have been installed, and their
 # post-install hooks have been run.
