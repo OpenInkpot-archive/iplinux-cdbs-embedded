@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-diverted="rules/debhelper.mk"
+diverted="rules/debhelper.mk class/autotools-vars.mk"
 
 case "$1" in
     remove)
