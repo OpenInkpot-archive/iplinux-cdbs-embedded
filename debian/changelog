@@ -1,3 +1,10 @@
+cdbs-embedded (0.2.oi2) asimov; urgency=low
+
+  * Added diversion for autotools-vars.mk: cdbs sets CC=gcc, CXX=g++
+    without it unconditionally.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Sat, 14 Mar 2009 17:09:33 +0600
+
 cdbs-embedded (0.2.oi1) asimov; urgency=low
 
   * Build for IPlinux.
