@@ -1,3 +1,10 @@
+cdbs-embedded (0.3) zelazny; urgency=low
+
+  * Added diversion for langcore.mk: cdbs sets CFLAGS="-g -Wall
+    -O[02]". Remove -O[02], handled by dpkg-buildpackage.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Wed, 06 Jan 2010 21:47:27 +0600
+
 cdbs-embedded (0.2.oi3) asimov; urgency=low
 
   * autotools-vars.mk was installed in wrong directory. Oops.
